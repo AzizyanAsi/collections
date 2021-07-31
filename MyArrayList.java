@@ -2,9 +2,9 @@ package Collections;
 
 import java.util.Iterator;
 
-public class MyArrayList implements Iterable {
+public class MyArrayList<T extends Object> implements Iterable<T> {
 
-    private Object[] arrayList;
+    private T[] arrayList;
     private int elementsInArray;
 
     public MyArrayList() {
@@ -16,13 +16,13 @@ public class MyArrayList implements Iterable {
             return;
         }
 
-        this.arrayList = new Object[n];
+        this.arrayList = (T[]) new Object[n];
         this.elementsInArray = 0;
     }
 
     @Override
-    public Iterator iterator() {
-        return new Iterator() {
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
             int pointer = 0;
             @Override
             public boolean hasNext() {
@@ -30,7 +30,7 @@ public class MyArrayList implements Iterable {
             }
 
             @Override
-            public Object next() {
+            public T next() {
                 if (hasNext()){
                     pointer++;
                     return get(pointer);
@@ -40,7 +40,7 @@ public class MyArrayList implements Iterable {
         };
     }
 
-    public void add(Object x) {
+    public void add(T x) {
         if (checkIfArrayFull()) {
             copyArray(0, "double");
         }
@@ -49,7 +49,7 @@ public class MyArrayList implements Iterable {
         this.elementsInArray++;
     }
 
-    public void add(int index, Object x) {
+    public void add(int index, T x) {
         if (checkIfArrayFull()) {
             copyArray(0, "double");
         }
@@ -59,10 +59,10 @@ public class MyArrayList implements Iterable {
             System.exit(-1);
         }
 
-        Object temp = this.arrayList[index];
+        T temp = this.arrayList[index];
         arrayList[index] = x;
 
-        Object temp2;
+        T temp2;
         for (int i = index; i < this.arrayList.length - 1; i++) {
             temp2 = arrayList[i + 1];
             arrayList[i + 1] = temp;
@@ -72,85 +72,3 @@ public class MyArrayList implements Iterable {
         copyArray(0, "");
         this.elementsInArray++;
     }
-
-    public Object get(int index) {
-        Object element = null;
-        try {
-            element = this.arrayList[index];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("The index that you specified is not within bounds.");
-            System.exit(-1);
-        }
-
-        return element;
-    }
-
-    public int size() {
-        return this.elementsInArray;
-    }
-
-    public boolean isEmpty() {
-        return this.elementsInArray == 0;
-    }
-
-    public boolean contains(Object ob) {
-        return find(ob) >= 0;
-    }
-
-    public int find (Object n) {
-        for (int i = 0; i < this.arrayList.length; i++) {
-            if (n.equals(this.arrayList[i])) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    public void remove (Object n) {
-        for (int i = 0; i < this.elementsInArray; i++) {
-            if (n.equals(this.arrayList[i])) {
-                this.arrayList[i] = null;
-                this.elementsInArray--;
-                copyArray(0, "");
-                return;
-            }
-        }
-    }
-
-    private boolean checkIfArrayFull() {
-        return this.arrayList.length == this.elementsInArray;
-    }
-
-    private void copyArray(int size, String action) {
-        size = increaseArraySize(size, action);
-
-        Object[] tempArray = new Object[size];
-
-        int tempElement = 0;
-
-        for (int i = 0; i < this.arrayList.length; i++, tempElement++) {
-            if (this.arrayList[i] == null) {
-                tempElement--;
-                continue;
-            }
-
-            tempArray[tempElement] = this.arrayList[i];
-        }
-
-        this.arrayList = null;
-        this.arrayList = new Object[tempArray.length];
-        this.arrayList = tempArray;
-    }
-
-    private int increaseArraySize(int size, String action) {
-        if (action.equals("double")) {
-            size = this.arrayList.length * 2;
-        } else {
-            size = this.arrayList.length + size;
-        }
-
-        return size;
-    }
-}
-

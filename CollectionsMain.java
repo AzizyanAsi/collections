@@ -5,7 +5,7 @@ import java.util.Iterator;
 public class CollectionsMain {
     public static void main(String[] args) {
 
-        MyArrayList numeric = new MyArrayList(50);
+        MyArrayList<String> numeric = new MyArrayList(50);
 
         numeric.add("b");
         numeric.add("G");
@@ -16,7 +16,7 @@ public class CollectionsMain {
         numeric.add("c");
         numeric.remove("aaaaa");
         numeric.remove("x");
-        Iterator iterat = numeric.iterator();
+        Iterator<String> iterat = numeric.iterator();
         while (iterat.hasNext()){
             System.out.println(iterat.next());
         }
